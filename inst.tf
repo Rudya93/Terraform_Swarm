@@ -11,7 +11,7 @@ resource "aws_instance" "master" {
   key_name = "${aws_key_pair.deployer.key_name}"
   connection {
     user = "ubuntu"
-    key_file = "ssh/key"
+    key_file = "/home/ubuntu/olrudenk.pem"
   }
   provisioner "remote-exec" {
     inline = [
@@ -42,7 +42,7 @@ resource "aws_instance" "slave" {
   key_name = "${aws_key_pair.deployer.key_name}"
   connection {
     user = "ubuntu"
-    key_file = "ssh/key"
+    key_file = "/home/ubuntu/olrudenk.pem"
   }
   provisioner "file" {
     source = "key.pem"
