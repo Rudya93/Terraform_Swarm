@@ -7,3 +7,12 @@ variable "secret_key" {
 variable "region" {
     default = "your-region"
 }
+variable "ami" {
+    default = "ami"
+}
+variable "key" {
+    default = "key"
+}
+variable "subn" {
+    default = "subn"
+}
