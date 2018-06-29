@@ -5,7 +5,7 @@ provider "aws" {
   region      = "${var.region}"
 }
 resource "aws_instance" "master" {
-  //ami           = "ami-26c43149"
+  ami           = "ami-5daa463a"
   instance_type = "t2.micro"
   security_groups = ["${aws_security_group.swarm.name}"]
   key_name = "${aws_key_pair.deployer.key_name}"
@@ -30,13 +30,13 @@ resource "aws_instance" "master" {
     destination = "/home/ubuntu/"
   }
   tags = { 
-    Name = "swarm-master"
+    Name = "olrudenk_swarm-master"
   }
 }
 
 resource "aws_instance" "slave" {
   count         = 2
-  //ami           = "ami-26c43149"
+  ami           = "ami-5daa463a"
   instance_type = "t2.micro"
   security_groups = ["${aws_security_group.swarm.name}"]
   key_name = "${aws_key_pair.deployer.key_name}"
@@ -62,6 +62,6 @@ resource "aws_instance" "slave" {
     ]
   }*/
   tags = { 
-    Name = "swarm-${count.index}"
+    Name = "olrudenk_swarm-${count.index}"
   }
 }
