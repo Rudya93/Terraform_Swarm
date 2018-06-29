@@ -13,7 +13,9 @@ resource "aws_instance" "master" {
     user = "ubuntu"
     key_file = "/home/ubuntu/olrudenk.pem"
   }
-  provisioner "remote-exec" {
+ # This is where we configure the instance with ansible-playbook
+    provisioner "local-exec" {
+ /* provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install apt-transport-https ca-certificates",
@@ -28,7 +30,7 @@ resource "aws_instance" "master" {
   provisioner "file" {
     source = "proj"
     destination = "/home/ubuntu/"
-  }
+  }*/
   tags = { 
     Name = "olrudenk_swarm-master"
   }
@@ -44,7 +46,7 @@ resource "aws_instance" "slave" {
     user = "ubuntu"
     key_file = "/home/ubuntu/olrudenk.pem"
   }
-  provisioner "file" {
+ /* provisioner "file" {
     source = "key.pem"
     destination = "/home/ubuntu/key.pem"
   }
@@ -60,7 +62,7 @@ resource "aws_instance" "slave" {
       "sudo scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i test.pem ubuntu@${aws_instance.master.private_ip}:/home/ubuntu/token .",
       "sudo docker swarm join --token $(cat /home/ubuntu/token) ${aws_instance.master.private_ip}:2377"
     ]
-  }
+  }*/
   tags = { 
     Name = "olrudenk_swarm-${count.index}"
   }
