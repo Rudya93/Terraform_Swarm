@@ -13,7 +13,7 @@ resource "aws_instance" "master" {
     user = "ubuntu"
     key_file = "ssh/key"
   }
-  /*provisioner "remote-exec" {
+  provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install apt-transport-https ca-certificates",
@@ -24,7 +24,7 @@ resource "aws_instance" "master" {
       "sudo docker swarm init",
       "sudo docker swarm join-token --quiet worker > /home/ubuntu/token"
     ]
-  }*/
+  }
   provisioner "file" {
     source = "proj"
     destination = "/home/ubuntu/"
@@ -48,7 +48,7 @@ resource "aws_instance" "slave" {
     source = "key.pem"
     destination = "/home/ubuntu/key.pem"
   }
-  /*provisioner "remote-exec" {
+  provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
       "sudo apt-get install apt-transport-https ca-certificates",
@@ -60,7 +60,7 @@ resource "aws_instance" "slave" {
       "sudo scp -o StrictHostKeyChecking=no -o NoHostAuthenticationForLocalhost=yes -o UserKnownHostsFile=/dev/null -i test.pem ubuntu@${aws_instance.master.private_ip}:/home/ubuntu/token .",
       "sudo docker swarm join --token $(cat /home/ubuntu/token) ${aws_instance.master.private_ip}:2377"
     ]
-  }*/
+  }
   tags = { 
     Name = "olrudenk_swarm-${count.index}"
   }
