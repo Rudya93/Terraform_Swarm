@@ -9,12 +9,16 @@ resource "aws_instance" "master" {
   instance_type = "t2.micro"
   security_groups = ["${aws_security_group.swarm.name}"]
   key_name = "${aws_key_pair.deployer.key_name}"
+  associate_public_ip_address = true
+  # This is where we configure the instance with ansible-playbook
+  provisioner "local-exec" {
+    command = "sleep 120; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u ubuntu --private-key /home/ubuntu/olrudenk.pem -i '${aws_instance.master.public_ip},' master.yml"
+    }
   connection {
     user = "ubuntu"
     key_file = "/home/ubuntu/olrudenk.pem"
   }
- # This is where we configure the instance with ansible-playbook
-    provisioner "local-exec" {
+
  /* provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
