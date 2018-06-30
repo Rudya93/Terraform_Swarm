@@ -29,7 +29,7 @@ resource "aws_instance" "slave" {
   instance_type = "t2.micro"
   subnet_id = "${var.subn}"
   key_name = "${var.key}"
-  private_ip = "${lookup(ips,count.index)}"
+  private_ip = "${lookup(var.ips,count.index)}"
 
 
   connection {
