@@ -36,5 +36,5 @@
     - name: Get my public IP from ipify.org
       ipify_facts:
 
-    - name: URL to the web aplication
+    - name: ip
       debug: msg='{{ ipify_public_ip }}'
