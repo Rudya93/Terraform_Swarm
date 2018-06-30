@@ -16,3 +16,9 @@ variable "key" {
 variable "subn" {
     default = "subn"
 }
+variable "ips" {
+    default = {
+        "0" = "10.244.0.11"
+        "1" = "10.244.0.12"
+        }
+}
