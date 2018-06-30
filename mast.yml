@@ -12,7 +12,7 @@
            - ca-certificates
            - curl
            - software-properties-common
-           - python-pip
+          
       state: present
     - name: inst swarm
       shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
