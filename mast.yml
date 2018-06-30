@@ -1,10 +1,17 @@
 - hosts: all
+  gather_facts: False
+  become: yes
+  tasks:
+  - name: install python 2
+    raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+
+- hosts: all
   become: yes
   tasks:
 
-            
 
-        
+
+
     - name: install docker swarm
       apt: pkg={{ item }} state=present update_cache=yes cache_valid_time=3600
       with_items:
@@ -12,23 +19,18 @@
            - ca-certificates
            - curl
            - software-properties-common
-          
+
       state: present
     - name: inst swarm
-      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-      shell: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-      shell: apt-get update
-      shell: sudo apt-get -y install docker-ce
-    - name: pip 
-      shell: pip install docker-compose
-      state: present
-    - name: add user to docker 
+      shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && apt-get update && sudo apt-get -y install docker-ce
+
+    - name: add user to docker
       shell: usermod -a -G docker ubuntu
       state: present
     - name: Restart docker
       service:
         name: docker
-        state: restarted 
+        state: restarted
     - name: start
       shell: sudo docker run hello-world
     - name: Get my public IP from ipify.org
@@ -36,4 +38,4 @@
 
     - name: URL to the web aplication
       debug: msg='{{ ipify_public_ip }}'
-      
+
