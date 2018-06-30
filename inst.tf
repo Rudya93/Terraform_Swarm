@@ -23,7 +23,7 @@ resource "aws_instance" "master" {
   }
 }
 
-resource "aws_instance" "slave" {
+resource "aws_instance" "slave0" {
   ami           = "${var.ami}"
   instance_type = "t2.micro"
   subnet_id = "${var.subn}"
