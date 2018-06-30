@@ -23,12 +23,13 @@ resource "aws_instance" "master" {
   }
 }
 
-resource "aws_instance" "slave0" {
+resource "aws_instance" "slave" {
+  count         = 2
   ami           = "${var.ami}"
   instance_type = "t2.micro"
   subnet_id = "${var.subn}"
   key_name = "${var.key}"
-  private_ip = "10.244.0.11"
+  private_ip = "${lookup(ips,count.index)}"
 
 
   connection {
@@ -37,27 +38,14 @@ resource "aws_instance" "slave0" {
   }
 
   tags = {
-    Name = "olrudenk_swarm0"
+    Name = "olrudenk_swarm-${count.index}"
   }
 }
-resource "aws_instance" "slave1" {
-  ami           = "${var.ami}"
-  instance_type = "t2.micro"
-  subnet_id = "${var.subn}"
-  key_name = "${var.key}"
-  private_ip = "10.244.0.12"
-  # This is where we configure the instance with ansible-playbook
-   provisioner "local-exec" {
-    command = "sleep 120;  ansible -i hosts play.yml"
-    }
-
-  connection {
-    user = "ubuntu"
-    private_key = "${file("/home/ubuntu/olrudenk.pem")}"
-  }
-
-  tags = {
-    Name = "olrudenk_swarm1"
+resource "null_resource" "ansible" {
+  provisioner "local-exec" {
+  command = "sleep 120; ansible-playbook -u ubuntu --private-key /home/ubuntu/olrudenk.pem -i hosts play.yml"
   }
 }
+
+
 
