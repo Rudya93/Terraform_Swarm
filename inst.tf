@@ -46,7 +46,10 @@ resource "aws_instance" "slave1" {
   subnet_id = "${var.subn}"
   key_name = "${var.key}"
   private_ip = "10.244.0.12"
- 
+  # This is where we configure the instance with ansible-playbook
+   provisioner "local-exec" {
+    command = "sleep 120;  ansible-playbook -u ubuntu --private-key /home/ubuntu/olrudenk.pem -i hosts play.yml"
+    }
 
   connection {
     user = "ubuntu"
@@ -57,7 +60,4 @@ resource "aws_instance" "slave1" {
     Name = "olrudenk_swarm1"
   }
 }
- # This is where we configure the instance with ansible-playbook
-   provisioner "local-exec" {
-    command = "sleep 120;  ansible-playbook -u ubuntu --private-key /home/ubuntu/olrudenk.pem -i hosts play.yml"
-    }
+
