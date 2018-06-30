@@ -3,6 +3,6 @@ output "master.ip" {
 }
 
 output "swarm.ip" {
-  -  value = "${aws_instance.slave.*.public_ip}"
+  value = "${aws_instance.slave.*.public_ip}"
 }
 
