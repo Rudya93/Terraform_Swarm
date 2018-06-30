@@ -19,7 +19,7 @@
            - ca-certificates
            - curl
            - software-properties-common
-
+           - python-pip
       state: present
     - name: inst swarm
       shell: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && apt-get update && sudo apt-get -y install docker-ce
@@ -31,11 +31,19 @@
       service:
         name: docker
         state: restarted
-    - name: start
-      shell: sudo docker run hello-world
-    - name: Get my public IP from ipify.org
-      ipify_facts:
+    - name: Swarm Init
+      command: docker swarm init --advertise-addr {{ inventory_hostname }}
+ 
+   - name: Get Worker Token
+     command: docker swarm join-token worker -q
+     register: worker_token
 
-    - name: URL to the web aplication
-      debug: msg='{{ ipify_public_ip }}'
+   - name: Show Worker Token
+     debug: var=worker_token.stdout
 
+   - name: Master Token
+     command: docker swarm join-token manager -q
+     register: master_token
+
+   - name: Show Master Token
+     debug: var=master_token.stdout
