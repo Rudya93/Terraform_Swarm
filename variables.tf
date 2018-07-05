@@ -22,3 +22,6 @@ variable "ips" {
         "1" = "10.244.0.12"
         }
 }
+variable "pk" {
+    default = "/home/ubuntu/**.pem"
+}
