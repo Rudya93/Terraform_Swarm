@@ -43,7 +43,7 @@ resource "aws_instance" "slave" {
 }
 resource "null_resource" "ansible" {
   provisioner "local-exec" {
-  command = "sleep 120; ansible-playbook -u ubuntu --private-key /home/ubuntu/olrudenk.pem -i hosts play.yml"
+  command = "sleep 120; ansible-playbook -u ubuntu --private-key '${var.pk}' -i hosts play.yml"
   }
 }
 
